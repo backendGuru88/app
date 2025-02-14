@@ -1,10 +1,16 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
 
 // MongoDB Connection
-const MONGO_URI = "mongodb+srv://lola:Oluwafunmilola200611@cluster0.1bv9e.mongodb.net/todo_db"; 
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ MONGO_URI is missing from .env file");
+  process.exit(1);
+}
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
@@ -15,7 +21,6 @@ mongoose.connect(MONGO_URI, {
 
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 // Routes
